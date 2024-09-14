@@ -18,7 +18,7 @@ const CadastroPage = () => {
     genero: '',
     dtNascimento: '',
     pontos: 0,
-    fidelidade: false,
+    fidelidade: 'NÃO FILIADO', // Alterado para string com valores 'FILIADO' e 'NÃO FILIADO'
   });
 
   // Estado para armazenar os dados do formulário de produto
@@ -30,20 +30,11 @@ const CadastroPage = () => {
 
   // Função para lidar com mudanças no formulário de cliente
   const handleClienteChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-
-    if (type === 'checkbox') {
-      const target = e.target as HTMLInputElement;
-      setClienteForm({
-        ...clienteForm,
-        [name]: target.checked,
-      });
-    } else {
-      setClienteForm({
-        ...clienteForm,
-        [name]: value,
-      });
-    }
+    const { name, value } = e.target;
+    setClienteForm({
+      ...clienteForm,
+      [name]: value,
+    });
   };
 
   // Função para lidar com mudanças no formulário de produto
@@ -60,7 +51,7 @@ const CadastroPage = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:8080/clientes', clienteForm);
+      const response = await axios.post('https://nextiawebapp.azurewebsites.net/cliente', clienteForm);
       console.log('Cliente cadastrado com sucesso:', response.data);
       setClienteForm({
         nome: '',
@@ -71,7 +62,7 @@ const CadastroPage = () => {
         genero: '',
         dtNascimento: '',
         pontos: 0,
-        fidelidade: false,
+        fidelidade: 'NÃO FILIADO', // Resetado para valor inicial
       });
     } catch (error) {
       console.error('Erro ao cadastrar cliente:', error);
@@ -83,7 +74,7 @@ const CadastroPage = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:8080/produtos', produtoForm);
+      const response = await axios.post('https://nextiawebapp.azurewebsites.net/produto', produtoForm);
       console.log('Produto cadastrado com sucesso:', response.data);
       setProdutoForm({
         nome: '',
@@ -210,15 +201,17 @@ const CadastroPage = () => {
 
             {/* Fidelidade */}
             <div className="flex space-x-4 items-center">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
+              <label className="flex-1">
+                Fidelidade:
+                <select
                   name="fidelidade"
-                  checked={clienteForm.fidelidade}
+                  value={clienteForm.fidelidade}
                   onChange={handleClienteChange}
-                  className="mr-2"
-                />
-                Fidelidade
+                  className="ml-2 px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
+                >
+                  <option value="FILIADO">FILIADO</option>
+                  <option value="NÃO FILIADO">NÃO FILIADO</option>
+                </select>
               </label>
             </div>
 
