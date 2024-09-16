@@ -11,8 +11,8 @@ interface Cliente {
   cpf: string;
   email: string;
   telefone: string;
-  sexo: string;
-  nasc: string;
+  genero: string;
+  dt_nascimento: string;
   pontos: number;
   fidelidade: string; // FILIADO ou NÃO FILIADO
 }
@@ -65,8 +65,12 @@ const EditarPage = () => {
               <tr>
                 <th className="px-4 py-2 text-left text-gray-500">Nome</th>
                 <th className="px-4 py-2 text-left text-gray-500">CPF</th>
-                <th className="px-4 py-2 text-left text-gray-500">Email</th>
                 <th className="px-4 py-2 text-left text-gray-500">Telefone</th>
+                <th className="px-4 py-2 text-left text-gray-500">Email</th>
+                <th className="px-4 py-2 text-left text-gray-500">Genero</th>
+                <th className="px-4 py-2 text-left text-gray-500">Data de Nascimento</th>
+                <th className="px-4 py-2 text-left text-gray-500">Pontos</th>
+                <th className="px-4 py-2 text-left text-gray-500">Fidelidade</th>
                 <th className="px-4 py-2 text-left text-gray-500">Ação</th>
               </tr>
             </thead>
@@ -75,8 +79,12 @@ const EditarPage = () => {
                 <tr key={cliente.id} className="border-t">
                   <td className="px-4 py-2">{cliente.nome}</td>
                   <td className="px-4 py-2">{cliente.cpf}</td>
-                  <td className="px-4 py-2">{cliente.email}</td>
                   <td className="px-4 py-2">{cliente.telefone}</td>
+                  <td className="px-4 py-2">{cliente.email}</td>
+                  <td className="px-4 py-2">{cliente.genero}</td>
+                  <td className="px-4 py-2">{cliente.dt_nascimento}</td>
+                  <td className="px-4 py-2">{cliente.pontos}</td>
+                  <td className="px-4 py-2">{cliente.fidelidade}</td>
                   <td className="px-4 py-2 flex space-x-2">
                     {/* Link para a página de edição do cliente */}
                     <Link href={`/editar/${cliente.id}`} className="text-blue-600 hover:underline">
