@@ -13,7 +13,7 @@ interface Cliente {
   sexo: string;
   nasc: string;
   pontos: number;
-  fidelidade: string; // Pode ser "FILIADO" ou "NÃO FILIADO"
+  fidelidade: string; // Pode ser "AFILIADO" ou "NÃO FILIADO"
 }
 
 const EditarClientePage = () => {
@@ -128,7 +128,7 @@ const EditarClientePage = () => {
                 onChange={(e) => setCliente({ ...cliente, fidelidade: e.target.value })}
                 className="px-4 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-200"
               >
-                <option value="FILIADO">FILIADO</option>
+                <option value="AFILIADO">AFILIADO</option>
                 <option value="NÃO FILIADO">NÃO FILIADO</option>
               </select>
             </div>

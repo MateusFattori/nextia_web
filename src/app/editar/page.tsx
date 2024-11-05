@@ -14,7 +14,7 @@ interface Cliente {
   genero: string;
   dt_nascimento: string;
   pontos: number;
-  fidelidade: string; // FILIADO ou NÃO FILIADO
+  fidelidade: string; // AFILIADO ou NÃO FILIADO
 }
 
 const EditarPage = () => {
@@ -37,7 +37,7 @@ const EditarPage = () => {
   // Função para excluir cliente
   const excluirCliente = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8080cliente/${id}`); // Ajuste para a URL de exclusão
+      await axios.delete(`http://localhost:8080/cliente/${id}`); // Ajuste para a URL de exclusão
       // Após a exclusão, remova o cliente da lista localmente
       setClientes(clientes.filter(cliente => cliente.id !== id));
       alert('Cliente excluído com sucesso');

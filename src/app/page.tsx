@@ -1,93 +1,82 @@
-"use client";  // Certifica que este componente será renderizado no cliente
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import axios from 'axios';
-import Layout from './components/Layout';
 
-interface Produto {
-  nome: string;
-  categoria: string;
-  valor: number;
-}
+const LoginPage = () => {
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-const Home = () => {
-  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-  // Função para buscar os produtos
-  const fetchProdutos = async () => {
     try {
-      const response = await axios.get('https://nextiawebapp.azurewebsites.net/produto'); // Substitua localhost pelo IP se necessário
-      setProdutos(response.data);
+      await axios.post('http://localhost:8080/login', { username, password });
+      router.push('/produtos');
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
+      console.error("Erro ao fazer login:", error);
+      alert("Login falhou! Verifique suas credenciais.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProdutos();
-  }, []);
-
   return (
-    <Layout>
-      <div className="p-6">
-        {/* Título da página */}
-        <h1 className="text-2xl font-bold text-gray-800">
-          Olá Mateus, <br />
-          <span className="text-lg text-gray-600">Bem-vindo a seus produtos 👋</span>
-        </h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-10 space-y-6">
+        <h2 className="text-4xl font-bold text-center text-blue-600">Bem-vindo</h2>
+        <p className="text-center text-gray-600">Faça login para acessar o sistema</p>
 
-        {/* Seção de Produtos */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-blue-600">Ativos</h2>
-
-          {/* Barra de busca e filtro */}
-          <div className="flex justify-between mt-4">
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div className="flex flex-col">
+            <label htmlFor="username" className="text-gray-700 font-semibold mb-2">
+              Usuário
+            </label>
             <input
               type="text"
-              placeholder="Pesquisar..."
-              className="px-4 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-200"
+              id="username"
+              placeholder="Digite seu usuário"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="h-14 px-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              required
             />
-            <select className="border px-4 py-2 rounded-md">
-              <option>Filtrar por: Recente</option>
-              <option>Filtrar por: Antigo</option>
-            </select>
           </div>
 
-          {/* Tabela de Produtos */}
-          <table className="min-w-full mt-4 bg-white border border-gray-200 rounded-md shadow-md">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-2 text-left text-gray-500">Nome do Produto</th>
-                <th className="px-4 py-2 text-left text-gray-500">Categoria</th>
-                <th className="px-4 py-2 text-left text-gray-500">Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {produtos.map((produto, index) => (
-                <tr key={index} className="border-t">
-                  <td className="px-4 py-2">{produto.nome}</td>
-                  <td className="px-4 py-2">{produto.categoria}</td>
-                  <td className="px-4 py-2">R$ {produto.valor.toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Paginação */}
-          <div className="flex justify-end mt-4">
-            <nav>
-              <ul className="flex space-x-2">
-                <li className="px-3 py-1 border rounded-md bg-gray-200">1</li>
-                <li className="px-3 py-1 border rounded-md">2</li>
-                <li className="px-3 py-1 border rounded-md">3</li>
-                <li className="px-3 py-1 border rounded-md">4</li>
-              </ul>
-            </nav>
+          <div className="flex flex-col">
+            <label htmlFor="password" className="text-gray-700 font-semibold mb-2">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Digite sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="h-14 px-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              required
+            />
           </div>
-        </div>
+
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className={`w-full py-3 rounded-md text-white font-semibold transition ${
+                loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Entrando..." : "Entrar"}
+            </button>
+          </div>
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 };
 
-export default Home;
+export default LoginPage;
